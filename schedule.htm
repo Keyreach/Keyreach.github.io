@@ -12,12 +12,13 @@ body {
 }
 table {
   width: 100%;
-  font-family: trebuchet ms;
+  font-family: open sans;
   border-spacing: 0;
 }
 td, th {
   padding: 6px;
-  font-size: 150%;
+  font-size: 1em;
+  overflow: hidden;
 }
 td:nth-of-type(1) {
   width: 3%;
@@ -27,26 +28,26 @@ td:nth-of-type(2) {
   text-align: center;
 }
 td:nth-of-type(4) {
-  width: 14%;
-  text-align: right;
+  width: 10%;
+  text-align: center;
 }
 td:nth-of-type(5) {
-  width: 14%;
-  text-align: right;
+  width: 10%;
+  text-align: center;
 }
 .day tr:nth-child(odd){
-	background: #CDF;
+	background: #DDD;
 }
 .day {
   display: none;
-  border: 2px solid #48A;
+  border: 2px solid #444;
   height: 90%;
 }
 .day table {
 	height: 100%;
 }
 .days:hover, .active {
-  background: #48A;
+  background: #444;
   color: #FFF;
 }
 #topside {
@@ -57,18 +58,19 @@ td:nth-of-type(5) {
 <body>
 <table id='topside'>
 <tr style='cursor:default;text-align:center;' id='daysbar'>
-  <th class=days onclick='showShedule(1, this)'>ПН</td>
-  <th class=days onclick='showShedule(2, this)'>ВТ</td>
-  <th class=days onclick='showShedule(3, this)'>СР</td>
-  <th class=days onclick='showShedule(4, this)'>ЧТ</td>
-  <th class=days onclick='showShedule(5, this)'>ПТ</td>
-  <th class=days onclick='showShedule(6, this)'>СБ</td>
+  <th style='background-image:url("http://urfu.ru/uploads/tx_templavoila/LOGO_UrFU.png");background-size:80%; background-position: center; background-repeat: no-repeat; width: 10%;'></th>
+  <th class=days onclick='showShedule(1, this)'>ПН</th>
+  <th class=days onclick='showShedule(2, this)'>ВТ</th>
+  <th class=days onclick='showShedule(3, this)'>СР</th>
+  <th class=days onclick='showShedule(4, this)'>ЧТ</th>
+  <th class=days onclick='showShedule(5, this)'>ПТ</th>
+  <th class=days onclick='showShedule(6, this)'>СБ</th>
 </tr>
 </table>
 <div class=day id=day1>
 <table>
 <tr><td>1</td><td>08:30 - 10:00</td><td>Физическая культура</td><td>Практика</td><td></td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Правоведние</td><td>Практика</td><td>Р-237</td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Правоведение</td><td>Практика</td><td>Р-237</td></tr>
 <tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
 <tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
 <tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
@@ -86,9 +88,9 @@ td:nth-of-type(5) {
 <div class=day id=day3>
 <table>
 <tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Теория вероятностей и матстатистика</td><td>Лекция</td><td>Р-339</td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Теория вероятностей и математическая статистика</td><td>Лекция</td><td>Р-339</td></tr>
 <tr><td>3</td><td>12:00 - 13:30</td><td>Схемотехника</td><td>Лекция</td><td>Р-237</td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td>Матпрограммирование</td><td>Лекция</td><td>Р-345</td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td>Математическое программирование</td><td>Лекция</td><td>Р-345</td></tr>
 <tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
 </table>
 </div>
@@ -97,7 +99,7 @@ td:nth-of-type(5) {
 <tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
 <tr><td>2</td><td>10:15 - 11:45</td><td>Численные методы</td><td>Лекция</td><td>Р-143</td></tr>
 <tr><td>3</td><td>12:00 - 13:30</td><td>Численные методы</td><td>Практика</td><td>Р-345</td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td>Теория вероятностей и матстатистика</td><td>Практика</td><td>Р-048</td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td>Теория вероятностей и математическая статистика</td><td>Практика</td><td>Р-048</td></tr>
 <tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
 </table>
 </div>
@@ -105,7 +107,7 @@ td:nth-of-type(5) {
 <table>
 <tr><td>1</td><td>08:30 - 10:00</td><td>Английский язык</td><td>Практика</td><td>Р-146</td></tr>
 <tr><td>2</td><td>10:15 - 11:45</td><td>Метрология</td><td>Лекция</td><td>Р-237</td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td>МОАП</td><td>Лекция</td><td>Р-342</td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td>Математическое обеспечение автоматизированного проектирования</td><td>Лекция</td><td>Р-342</td></tr>
 <tr><td>4</td><td>14:15 - 15:45</td><td>Правоведение</td><td>Лекция</td><td>Р-339</td></tr>
 <tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
 </table>
