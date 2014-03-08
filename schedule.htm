@@ -1,0 +1,129 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+body {
+  width: 800px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+table {
+  width: 100%;
+  font-family: trebuchet ms;
+  border-spacing: 0;
+}
+td, th {
+  padding: 6px;
+}
+td:nth-of-type(1) {
+  width: 3%;
+}
+td:nth-of-type(2) {
+  width: 14%;
+  text-align: center;
+}
+td:nth-of-type(4) {
+  width: 14%;
+  text-align: right;
+}
+td:nth-of-type(5) {
+  width: 14%;
+  text-align: right;
+}
+.day tr:nth-child(odd){
+	background: #CDF;
+}
+.day {
+  display: none;
+  border: 2px solid #48A;
+}
+.days:hover, .active {
+  background: #48A;
+  color: #FFF;
+}
+</style>
+</head>
+<body>
+<table>
+<tr style='cursor:default;text-align:center;' id='daysbar'>
+  <th class=days onclick='showShedule(1, this)'>ПН</td>
+  <th class=days onclick='showShedule(2, this)'>ВТ</td>
+  <th class=days onclick='showShedule(3, this)'>СР</td>
+  <th class=days onclick='showShedule(4, this)'>ЧТ</td>
+  <th class=days onclick='showShedule(5, this)'>ПТ</td>
+  <th class=days onclick='showShedule(6, this)'>СБ</td>
+</tr>
+</table>
+<div class=day id=day1>
+<table>
+<tr><td>1</td><td>08:30 - 10:00</td><td>Физическая культура</td><td>Практика</td><td></td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Правоведние</td><td>Практика</td><td>Р-237</td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<div class=day id=day2>
+<table>
+<tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<div class=day id=day3>
+<table>
+<tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Теория вероятностей и матстатистика</td><td>Лекция</td><td>Р-339</td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td>Схемотехника</td><td>Лекция</td><td>Р-237</td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td>Матпрограммирование</td><td>Лекция</td><td>Р-345</td></tr>
+<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<div class=day id=day4>
+<table>
+<tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Численные методы</td><td>Лекция</td><td>Р-143</td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td>Численные методы</td><td>Практика</td><td>Р-345</td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td>Теория вероятностей и матстатистика</td><td>Практика</td><td>Р-048</td></tr>
+<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<div class=day id=day5>
+<table>
+<tr><td>1</td><td>08:30 - 10:00</td><td>Английский язык</td><td>Практика</td><td>Р-146</td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Метрология</td><td>Лекция</td><td>Р-237</td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td>МОАП</td><td>Лекция</td><td>Р-342</td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td>Правоведение</td><td>Лекция</td><td>Р-339</td></tr>
+<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+<div class=day id=day6>
+<table>
+<tr><td>1</td><td>08:30 - 10:00</td><td>Очобы теории сигналов</td><td>Лекция</td><td>Р-146</td></tr>
+<tr><td>2</td><td>10:15 - 11:45</td><td>Физическая культура</td><td>Практика</td><td></td></tr>
+<tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
+<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
+</table>
+</div>
+</body>
+<script>
+cur = null;
+cur2 = null;
+function showShedule(num, o){
+  if(cur) {
+    cur.style.display = 'none';
+  }
+  if(cur2) {
+    cur2.classList.remove('active');
+  }
+  cur = document.getElementById('day'+num);
+  cur2 = o;
+  cur.style.display = 'block';
+  cur2.classList.add('active');
+}
+showShedule((new Date()).getDay());
+</script>
+</html>
