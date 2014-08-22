@@ -1,0 +1,210 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<title>konquest</title>
+<style>
+@font-face {
+	font-family: Fake Receipt;
+	src: url('fakereceipt.ttf');
+}
+* {
+	font-family: Fake Receipt;
+}
+body {
+	color: #448844;
+	background: #222222;
+}
+.top {
+	font-size: 14pt;
+	padding: 4px;
+	font-weight: bold;
+}
+.selected {
+	background: #448844;
+	color: #222222;
+	font-size: 11pt;
+	cursor: default;
+}
+.u0 {
+	font-size: 11pt;
+	cursor: default;
+}
+.pname, .pfleet, .pprod, .pown, .u1 {
+	display: inline-block;
+	width: 140px;
+	padding: 4px;
+}
+.u1 {
+	width: 90px;
+	padding: 2px;
+	margin: 1px;
+	border: 1px solid #448844;
+	transition: 0.5s ease;
+}
+.u1:hover {
+	background: #484;
+	color: #222;
+}
+</style>
+</head>
+<body>
+<div class=top>Yet another galactic conquest</div>
+<div class=u0 style='font-weight:bold'><div class=pname>PLANET</div><div class=pfleet>FLEET</div><div class=pprod>PRODUCTION</div><div class=pown>OWNER</div></div>
+<div id='galaktik'>
+</div>
+<input type=button value=ENDTURN onclick='evaluateOrders()' style='color:#484;background:#222;border:2px solid #484;text-align:right;padding:4px;margin:8px;'>
+<div id=warlog></div>
+</body>
+<script>
+// system info
+var fleet = [];
+var prod = [];
+var owner = [];
+var planets = 9;
+// orders
+var ft_size = [];
+var ft_trgt = [];
+var ft_time = [];
+var ft_ownd = [];
+var idiots = ['shuttleworth','stallman'];
+var planetnames = ['alpha','beta','gamma','delta','epsilon','zeta','eta','theta','iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega'];
+function shuffleArray(arr){
+	var len = arr.length;
+	while(len>0){
+		neu = Math.floor(Math.random()*len);
+		len--;
+		tmp = arr[len];
+		arr[len] = arr[neu];
+		arr[neu] = tmp;
+	}
+	return arr;
+}
+function generateSystem(){
+	shuffleArray(planetnames);
+	for(i=0;i<planets;i++){
+		fleet[i] = Math.round(Math.random()*10)+5;
+		prod[i] = Math.round(Math.random()*5)+1;
+		owner[i] = 'neutral';
+	}
+	owner[Math.floor(Math.random()*planets)] = playername;
+	for(i=0;i<idiots.length;i++){
+	do {
+		rnd = Math.floor(Math.random()*planets);
+	} while(owner[rnd]!='neutral');
+	owner[rnd] = idiots[i];
+	}
+}
+function refreshInfo(){
+	document.querySelector('#galaktik').innerHTML = '';
+	for(i=0;i<planets;i++){
+		if(owner[i]==playername){
+			document.querySelector('#galaktik').innerHTML += '<div class=u0><div class=pname>'+planetnames[(i+1)]+'</div><div class=pfleet>'+fleet[i]+'</div><div class=pprod>'+prod[i]+'</div><div class=pown>'+owner[i].toUpperCase()+'</div><div class=u1 onclick="from='+(i+1)+'; this.parentNode.className=\'selected\'">SEND</div><div class=u1 onclick="moveFleet('+(i+1)+')">MOVE</div></div>';
+		} else {
+			document.querySelector('#galaktik').innerHTML += '<div class=u0><div class=pname>'+planetnames[(i+1)]+'</div><div class=pfleet>'+fuzzyFleet(fleet[i])+'</div><div class=pprod>'+fuzzyLevel(prod[i])+'</div><div class=pown>'+owner[i].toUpperCase()+'</div><div class=u1 onclick="moveFleet('+(i+1)+')">TARGET</div></div>';
+		}
+	}
+}
+function moveFleet(to){
+	if(from!=''){
+	do {
+		size = parseInt(prompt('Quantity:'));
+	} while(size>fleet[from-1]);
+	if(confirm('Send fleet from '+from+' to '+to));
+		sendFleet(from,to,size);
+	}
+}
+function sendFleet(from, to, size){
+	fleet[from-1] -= size;
+	ft_size.push(size);
+	ft_trgt.push(to-1);
+	ft_time.push(Math.abs(from-to));
+	ft_ownd.push(playername);
+	refreshInfo();
+	from = '';
+}
+function fuzzyLevel(num){
+	if(num<3){
+		return 'weak';
+	} else if(num<5){
+		return 'normal';
+	} else {
+		return 'strong';
+	}
+}
+function fuzzyFleet(num){
+	if(num<2){
+		return '*';
+	} else if(num<4){
+		return '**';
+	} else if(num<8){
+		return '***';
+	} else if(num<16){
+		return '****';
+	} else if(num<32){
+		return '*****';
+	} else if(num<64){
+		return '******';
+	} else {
+		return '*******';
+	}
+}
+function evaluateOrders(){
+	for(i=0;i<ft_size.length;i++){
+		if(ft_time[i]==1){
+		if(owner[ft_trgt[i]] == ft_ownd[i]){
+			fleet[ft_trgt[i]] += ft_size[i];
+			document.querySelector('#warlog').innerHTML=ft_ownd[i]+' has move fleet to planet '+planetnames[(ft_trgt[i]+1)]+'<br/>'+document.querySelector('#warlog').innerHTML;
+		} else if(ft_size[i]>fleet[ft_trgt[i]]){
+			owner[ft_trgt[i]] = ft_ownd[i];
+			fleet[ft_trgt[i]] = ft_size[i] - fleet[ft_trgt[i]];
+			document.querySelector('#warlog').innerHTML='<span style="color:#844">'+ft_ownd[i]+' has conquered planet '+planetnames[(ft_trgt[i]+1)]+'</span><br>'+document.querySelector('#warlog').innerHTML;
+		} else {
+			fleet[ft_trgt[i]] -= ft_size[i];
+			document.querySelector('#warlog').innerHTML=ft_ownd[i]+' has failed to conquer planet '+planetnames[(ft_trgt[i]+1)]+'<br>'+document.querySelector('#warlog').innerHTML;
+		}
+		ft_time[i]--;
+		}
+		if(ft_time[i]>1){
+			ft_time[i]--;
+		}
+	}
+	for(i=0;i<planets;i++){
+		fleet[i] += prod[i];
+	}
+	refreshInfo();
+	for(i=0;i<idiots.length;i++){
+	idiotexist = 0;
+	for(j=0;j<planets;j++){
+		if(owner[j]==idiots[i])
+			idiotexist = 1;
+	}
+	// ai stage
+	if(idiotexist==1){
+	if(Math.random()<0.6){
+	do {
+		from = Math.floor(Math.random()*planets);
+	} while(owner[from]!=idiots[i])
+	do {
+		to = Math.floor(Math.random()*planets);
+	} while(owner[to]==idiots[i])
+	size = Math.floor(Math.random()*fleet[from]);
+	fleet[from] -= size;
+	ft_trgt.push(to);
+	ft_size.push(size);
+	ft_time.push(Math.abs(from-to));
+	ft_ownd.push(idiots[i]);
+	refreshInfo();
+	}
+	}
+	}
+	for(i=0;i<fleet.length;i++){
+		if(isNan(fleet[i])){
+			fleet[i]=0;
+		}
+	}
+}
+playername = prompt('Your name:')
+generateSystem();
+refreshInfo();
+</script>
+</html>
