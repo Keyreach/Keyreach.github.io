@@ -28,7 +28,7 @@ html, body {
 }
 #toolbar div:hover {
 	color: #FFF;
-	background: #358;
+	background: #238;
 }
 #editor {
 	margin: 0px;
