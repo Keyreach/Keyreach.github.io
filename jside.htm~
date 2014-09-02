@@ -16,7 +16,7 @@ html, body {
 	position: block;
 	width: 100%;
 	height: 32px;
-	background: #CCC;
+	background: #D8D8D8;
 	color: #222;
 }
 #toolbar div {
@@ -28,7 +28,11 @@ html, body {
 }
 #toolbar div:hover {
 	color: #FFF;
-	background: #238;
+	background: #358;
+}
+.act div {
+	width: 80px;
+	text-align: center;
 }
 #editor {
 	margin: 0px;
@@ -52,13 +56,38 @@ html, body {
 </head>
 <body>
 <div id=toolbar>
+	<span style='float:right' class='act'>
 	<div onclick='executor()'>Run (F9)</div>
 	<div onclick='document.querySelector("#log").innerHTML=""'>Clear log</div>
+	<div onclick='saveSlot()'>Save</div>
+	<div onclick='rmSlot()'>Delete</div>
+	</span>
+	<span id=slots></span>
+	<div onclick='nowslot="NEWSLOT";document.querySelector("#editor").value=""; document.title="NEWSLOT // JSIDE"'>+</div>
 </div>
 <textarea id='editor'></textarea>
 <div id='log'></div>
 </body>
 <script>
+var ls = localStorage;
+var nowslot = 'NEWSLOT';
+function slotMenu(){
+	document.querySelector('#slots').innerHTML = '';
+	for(i=0;i<ls.length;i++){
+		tmp = document.createElement('div');
+		tmp.innerHTML = ls.key(i);
+		tmp.onclick = function(){ document.querySelector('#editor').value = ls.getItem(this.innerHTML); nowslot = this.innerHTML; document.title = this.innerHTML+' // JSIDE' };
+		document.querySelector('#slots').appendChild(tmp);
+	}
+}
+function saveSlot(){
+	ls.setItem(prompt('Slot name',nowslot),document.querySelector('#editor').value);
+	slotMenu();
+}
+function rmSlot(){
+	ls.removeItem(nowslot);
+	slotMenu();
+}
 function executor(){
 		sc = document.createElement('script');
 		sc.innerHTML = document.getElementById("editor").value;
@@ -70,55 +99,6 @@ window.onkeyup = function(event){
 window.onerror = function(message, url, linenumber){
 	document.getElementById('log').innerHTML += 'Error: '+message+' in '+url+' on line '+linenumber+'<br>';
 }
-/*
- * JS-Forms
- */
-function mkForm(){
-	kfm = document.createElement('div');
-	kfm.style.border = '2px solid #444';
-	kfm.style.position = 'absolute';
-	kfm.style.background = '#FFF';
-	kfm.style.width = '320px';
-	kfm.style.height = '240px';
-	kfm.style.top = (window.innerHeight-240)/2+'px';
-	kfm.style.left = (window.innerWidth-320)/2+'px';
-	kfm.style.font = '400 12pt Clear Sans';
-	kfm.style.padding = '8px';
-	kfm.style.textAlign = 'center';
-	kfm.innerHTML = '<u onclick="rmUnit(this.parentNode)" style="float:right;font-size:x-small;cursor:pointer">close</u>';
-	document.body.appendChild(kfm);
-	return kfm;
-}
-function mkText(text, fm){
-	ktx = document.createElement('div');
-	ktx.innerHTML = text;
-	ktx.style.margin = '3px';
-	fm.appendChild(ktx);
-	return ktx;
-}
-function mkButton(text, fun, fm){
-	kbt = document.createElement('input');
-	kbt.type = 'button';
-	kbt.onclick = function(){ eval(fun) };
-	kbt.style.margin = '3px';
-	kbt.value = text;
-	fm.appendChild(kbt);
-	return kbt;
-}
-function mkEdit(text, fun, fm){
-	ked = document.createElement('input');
-	ked.type = 'text';
-	ked.onkeyup = function(event){ if(event.keyCode==13){ eval(fun) } };
-	ked.style.margin = '3px';
-	ked.value = text;
-	fm.appendChild(ked);
-	return ked;
-}
-function clForm(fm){
-	fm.innerHTML = '';
-}
-function rmUnit(unit){
-	unit.parentNode.removeChild(unit);
-}
+slotMenu();
 </script>
 </html>
