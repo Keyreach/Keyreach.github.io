@@ -30,10 +30,6 @@ html, body {
 	color: #FFF;
 	background: #358;
 }
-.act div {
-	width: 80px;
-	text-align: center;
-}
 #editor {
 	margin: 0px;
 	font: 400 10pt fira mono ot;

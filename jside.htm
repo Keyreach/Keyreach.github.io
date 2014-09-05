@@ -93,7 +93,7 @@ window.onkeyup = function(event){
 	if(event.keyCode==120){ executor() };
 }
 window.onerror = function(message, url, linenumber){
-	document.getElementById('log').innerHTML += 'Error: '+message+' in '+url+' on line '+linenumber+'<br>';
+	document.getElementById('log').innerHTML = 'Error: '+message+' in '+url+' on line '+linenumber+'<br>' + document.getElementById('log').innerHTML;
 }
 slotMenu();
 </script>
