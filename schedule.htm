@@ -1,142 +1,146 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset='utf-8'>
 <style>
-* {
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-}
 body {
-  max-width: 100%;
-  margin: 0 auto;
+	font: 400 10pt Roboto;
+	max-width: 550px;
+	margin: 128px auto;
 }
-table {
-  width: 100%;
-  font-family: open sans;
-  border-spacing: 0;
+#weekday {
+	padding: 8px;
+	font-weight: bold;
+	border-bottom: 2px solid #444;
 }
-td, th {
-  padding: 6px;
-  font-size: 1.5em;
-  overflow: hidden;
+.doubleperiod {
+	border-bottom: 1px solid #444;
 }
-td:nth-of-type(1) {
-  width: 3%;
+.period, .subject, .location {
+	display: inline-block;
+	padding: 8px;
+	width: 256px;
 }
-td:nth-of-type(2) {
-  width: 14%;
-  text-align: center;
+.period, .location {
+	width: 100px;
 }
-td:nth-of-type(4) {
-  width: 10%;
-  text-align: center;
-}
-td:nth-of-type(5) {
-  width: 10%;
-  text-align: center;
-}
-.day tr:nth-child(odd){
-	background: #DDD;
-}
-.day {
-  display: none;
-  border: 2px solid #444;
-  height: 90%;
-}
-.day table {
-	height: 100%;
-}
-.days:hover, .active {
-  background: #444;
-  color: #FFF;
-}
-#topside {
-	height: 10%;
+.btn {
+	padding: 4px 8px;
+	margin: 2px;
+	cursor: pointer;
 }
 </style>
 </head>
 <body>
-<table id='topside'>
-<tr style='cursor:default;text-align:center;' id='daysbar'>
-  <th style='background-image:url("http://urfu.ru/uploads/tx_templavoila/LOGO_UrFU.png");background-size:80%; background-position: center; background-repeat: no-repeat; width: 10%;'></th>
-  <th class=days onclick='showShedule(1, this)'>ПН</th>
-  <th class=days onclick='showShedule(2, this)'>ВТ</th>
-  <th class=days onclick='showShedule(3, this)'>СР</th>
-  <th class=days onclick='showShedule(4, this)'>ЧТ</th>
-  <th class=days onclick='showShedule(5, this)'>ПТ</th>
-  <th class=days onclick='showShedule(6, this)'>СБ</th>
-</tr>
-</table>
-<div class=day id=day1>
-<table>
-<tr><td>1</td><td>08:30 - 10:00</td><td>Физическая культура</td><td>Практика</td><td></td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Правоведение</td><td>Практика</td><td>Р-237</td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
-<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
-</table>
+<div id=weekday>
+<div onclick='changeWeek();this.innerHTML=(this.innerHTML=="нечётная" ? "чётная" : "нечётная")' style='float:right;padding:2px;cursor:pointer'>нечётная</div>
+<span id=cwday></span>
 </div>
-<div class=day id=day2>
-<table>
-<tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td></td><td></td><td></td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
-<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
-</table>
-</div>
-<div class=day id=day3>
-<table>
-<tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Теория вероятностей и математическая статистика</td><td>Лекция</td><td>Р-339</td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td>Метрология</td><td>Лекция</td><td>Р-237</td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td>Математическое программирование</td><td>Лекция</td><td>Р-345</td></tr>
-<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
-</table>
-</div>
-<div class=day id=day4>
-<table>
-<tr><td>1</td><td>08:30 - 10:00</td><td></td><td></td><td></td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Численные методы</td><td>Лекция</td><td>Р-143</td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td>Численные методы</td><td>Практика</td><td>Р-345</td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td>Теория вероятностей и математическая статистика</td><td>Практика</td><td>Р-048</td></tr>
-<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
-</table>
-</div>
-<div class=day id=day5>
-<table>
-<tr><td>1</td><td>08:30 - 10:00</td><td>Английский язык</td><td>Практика</td><td>Р-146</td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Схемотехника</td><td>Лекция</td><td>Р-237</td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td>Математическое обеспечение автоматизированного проектирования</td><td>Лекция</td><td>Р-342</td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td>Правоведение</td><td>Лекция</td><td>Р-339</td></tr>
-<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
-</table>
-</div>
-<div class=day id=day6>
-<table>
-<tr><td>1</td><td>08:30 - 10:00</td><td>Основы теории сигналов</td><td>Лекция</td><td>Р-146</td></tr>
-<tr><td>2</td><td>10:15 - 11:45</td><td>Физическая культура</td><td>Практика</td><td></td></tr>
-<tr><td>3</td><td>12:00 - 13:30</td><td></td><td></td><td></td></tr>
-<tr><td>4</td><td>14:15 - 15:45</td><td></td><td></td><td></td></tr>
-<tr><td>5</td><td>16:00 - 17:30</td><td></td><td></td><td></td></tr>
-</table>
-</div>
+<div id=tbl></div>
+<div class=btn onclick='prevDay()' style='float:left'>&laquo; PREV</div>
+<div class=btn onclick='nextDay()' style='float:right'>NEXT &raquo;</div>
 </body>
 <script>
-cur = null;
-cur2 = null;
-function showShedule(num, o){
-  if(cur) {
-    cur.style.display = 'none';
-  }
-  if(cur2) {
-    cur2.classList.remove('active');
-  }
-  cur = document.getElementById('day'+num);
-  cur2 = o;
-  cur.style.display = 'block';
-  cur2.classList.add('active');
+var oddweek = 0;
+var per1 = ['08:30','10:15','12:00','14:15','16:00','17:40'];
+var per2 = ['10:00','11:45','13:30','15:45','17:30','19:05'];
+var schedule = [
+	[
+	{
+		name: 'Понедельник',
+		subjects: ['-','-','-','Проектирование Internet-приложений','Проектирование Internet-приложений','Проектирование Internet-приложений'],
+		location: ['-','-','-','Р-243','Р-242','Р-242']
+	},
+	{
+		name: 'Вторник',
+		subjects: ['-','-','-','-','-','-'],
+		location: ['-','-','-','-','-','-']
+	},
+	{
+		name: 'Среда',
+		subjects: ['-','Физкультура','Иностранный язык специальности','Теория автоматов','-','-'],
+		location: ['-','-','Р-140','Р-342','-','-']
+	},
+	{
+		name: 'Четверг',
+		subjects: ['-','-','Операционные системы','Системное программное обеспечение','Построение и анализ алгоритмов','-'],
+		location: ['-','-','Р-215','Р-243','Р-342','-']
+	},
+	{
+		name: 'Пятница',
+		subjects: ['-','-','Иностранный язык специальности','Организация ЭВМ','Теория автоматов','-'],
+		location: ['-','-','Р-138','Р-239','Р-341','-']
+	},
+	{
+		name: 'Суббота',
+		subjects: ['-','Физкультура','-','-','-','-'],
+		location: ['-','-','-','-','-','-']
+	},
+	],
+	[
+	{
+		name: 'Понедельник',
+		subjects: ['-','Системное программное обеспечение','Системное программное обеспечение','Проектирование Internet-приложений','-','-'],
+		location: ['-','Р-342','Р-342','Р-243','-','-']
+	},
+	{
+		name: 'Вторник',
+		subjects: ['-','-','-','-','-','-'],
+		location: ['-','-','-','-','-','-']
+	},
+	{
+		name: 'Среда',
+		subjects: ['-','Физкультура','Иностранный язык специальности','Теория автоматов','-','-'],
+		location: ['-','-','Р-140','Р-342','-','-']
+	},
+	{
+		name: 'Четверг',
+		subjects: ['Построение и анализ алгоритмов','Построение и анализ алгоритмов','Операционные системы','Системное программное обеспечение','Построение и анализ алгоритмов','-'],
+		location: ['Р-345','Р-345','Р-215','Р-243','Р-342','-']
+	},
+	{
+		name: 'Пятница',
+		subjects: ['-','-','Иностранный язык специальности','Организация ЭВМ','Теория автоматов','-'],
+		location: ['-','-','Р-138','Р-239','Р-341','-']
+	},
+	{
+		name: 'Суббота',
+		subjects: ['-','Физкультура','Организация ЭВМ','Организация ЭВМ','-','-'],
+		location: ['-','-','Р-440','Р-440','-','-']
+	},
+	]
+];
+cwday = (new Date()).getDay() - 1;
+function updateSchedule(){
+	today = schedule[oddweek][cwday];
+	document.querySelector('#cwday').innerHTML = today.name;
+	document.querySelector('#tbl').innerHTML = '';
+	for(i=0;i<6;i++){
+		document.querySelector('#tbl').innerHTML += '<div class=doubleperiod><div class=period>'+per1[i]+' - '+per2[i]+'</div><div class=subject>'+today.subjects[i]+'</div><div class=location>'+today.location[i]+'</div></div>';
+	}
 }
-showShedule((new Date()).getDay());
+function prevDay(){
+	if(cwday==0){
+		cwday = 5;
+	} else {
+		cwday--;
+	}
+	updateSchedule();
+}
+function nextDay(){
+	if(cwday==5){
+		cwday = 0;
+	} else {
+		cwday++;
+	}
+	updateSchedule();
+}
+function changeWeek(){
+	if(oddweek==0)
+		oddweek = 1;
+	else
+		oddweek = 0;
+	updateSchedule();
+}
+updateSchedule();
 </script>
 </html>
