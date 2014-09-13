@@ -9,6 +9,7 @@
 </canvas>
 </body>
 <script>
+var mov = 0;
 var jmp = 0;
 var x = y = 3;
 var w = 640;
@@ -44,10 +45,14 @@ function movePc(dir){
 	if(chkPos(dir)){
 		skreen[x][y] = 0;
 		switch(dir){
-			case 0: x++; break;
-			case 1: y++; break;
-			case 2: x--; break;
-			case 3: y--; break;
+			case 6: x++; break;
+			case 2: y++; break;
+			case 4: x--; break;
+			case 8: y--; break;
+			case 3: x++; y++; break;
+			case 1: x--; y++; break;
+			case 7: x--; y--; break;
+			case 9: x++; y--; break;
 		}
 		skreen[x][y] = 2;
 		drawSkreen();
@@ -55,16 +60,14 @@ function movePc(dir){
 }
 function chkPos(dir){
 	switch(dir){
-		case 0: if(skreen[x+1][y]==3) { score+=coin; return 1; } break;
-		case 1: if(skreen[x][y+1]==3) { score+=coin; return 1; } break;
-		case 2: if(skreen[x-1][y]==3) { score+=coin; return 1; } break;
-		case 3: if(skreen[x][y-1]==3) { score+=coin; return 1; } break;
-	}
-	switch(dir){
-		case 0: if(skreen[x+1][y]!=0) return 0; break;
-		case 1: if(skreen[x][y+1]!=0) return 0; break;
-		case 2: if(skreen[x-1][y]!=0) return 0; break;
-		case 3: if(skreen[x][y-1]!=0) return 0; break;
+		case 6: if(skreen[x+1][y]!=0) return 0; break;
+		case 2: if(skreen[x][y+1]!=0) return 0; break;
+		case 4: if(skreen[x-1][y]!=0) return 0; break;
+		case 8: if(skreen[x][y-1]!=0) return 0; break;
+		case 3: if(skreen[x+1][y+1]!=0) return 0; break;
+		case 1: if(skreen[x-1][y+1]!=0) return 0; break;
+		case 7: if(skreen[x-1][y-1]!=0) return 0; break;
+		case 9: if(skreen[x+1][y-1]!=0) return 0; break;
 	}
 	return 1;
 }
@@ -84,13 +87,21 @@ for(k=0;k<20;k++)
 drawSkreen();
 window.onkeydown = function(event){
 	switch(event.keyCode){
-		case 37: movePc(2); break;
-		case 38: if(!chkPos(1)){ jmp = 1; setTimeout('jmp=0',2000); } break;
-		case 39: movePc(0); break;
-		case 40: movePc(1); break;
+		case 37: mov = 1; break;
+		case 65: if(!chkPos(2)){ jmp = 1; setTimeout('jmp=0',900); } break;
+		case 39: mov = 2; break;
+		case 40: movePc(2); break;
 	}
 }
-setInterval('if(jmp==1) movePc(3)',250);
-setInterval('if(jmp==0) movePc(1)',250);
+window.onkeyup = function(event){
+	switch(event.keyCode){
+		case 37: mov = 0; break;
+		case 39: mov = 0; break;
+	}	
+}
+setInterval('if(mov==1) movePc(4)',100);
+setInterval('if(mov==2) movePc(6)',100);
+setInterval('if(jmp==1) movePc(8)',100);
+setInterval('if(jmp==0) movePc(2)',150);
 </script>
 </html>

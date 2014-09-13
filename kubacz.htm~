@@ -5,15 +5,15 @@
 <meta charset='utf-8'>
 </head>
 <body>
-<canvas height='240' width='320' id='kanwas'>
+<canvas height='480' width='640' id='kanwas'>
 </canvas>
 </body>
 <script>
 var jmp = 0;
 var x = y = 3;
-var w = 320;
-var h = 240;
-var b = 2;
+var w = 640;
+var h = 480;
+var b = 8;
 var kanwas = document.getElementById('kanwas');
 var ktx = kanwas.getContext('2d');
 ktx.fillRect(0,0,kanwas.width,kanwas.height);
