@@ -53,20 +53,13 @@ function movePc(dir){
 		drawSkreen();
 	}
 }
-function jumpEm(){
-	skreen[x][y] = 0;
-	for(i=0;i<6;i++){	
-		alert('Jumping '+i);	
-		if(skreen[x][y-i]!=0){
-			break;
-		}
-		skreen[x][y] = 0;
-		y-=5;
-		skreen[x][y] = 2;
-		drawSkreen();
-	}
-}
 function chkPos(dir){
+	switch(dir){
+		case 0: if(skreen[x+1][y]==3) { score+=coin; return 1; } break;
+		case 1: if(skreen[x][y+1]==3) { score+=coin; return 1; } break;
+		case 2: if(skreen[x-1][y]==3) { score+=coin; return 1; } break;
+		case 3: if(skreen[x][y-1]==3) { score+=coin; return 1; } break;
+	}
 	switch(dir){
 		case 0: if(skreen[x+1][y]!=0) return 0; break;
 		case 1: if(skreen[x][y+1]!=0) return 0; break;

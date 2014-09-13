@@ -5,15 +5,15 @@
 <meta charset='utf-8'>
 </head>
 <body>
-<canvas height='480' width='640' id='kanwas'>
+<canvas height='240' width='320' id='kanwas'>
 </canvas>
 </body>
 <script>
 var jmp = 0;
 var x = y = 3;
-var w = 640;
-var h = 480;
-var b = 8;
+var w = 320;
+var h = 240;
+var b = 2;
 var kanwas = document.getElementById('kanwas');
 var ktx = kanwas.getContext('2d');
 ktx.fillRect(0,0,kanwas.width,kanwas.height);
@@ -53,20 +53,13 @@ function movePc(dir){
 		drawSkreen();
 	}
 }
-function jumpEm(){
-	skreen[x][y] = 0;
-	for(i=0;i<6;i++){	
-		alert('Jumping '+i);	
-		if(skreen[x][y-i]!=0){
-			break;
-		}
-		skreen[x][y] = 0;
-		y-=5;
-		skreen[x][y] = 2;
-		drawSkreen();
-	}
-}
 function chkPos(dir){
+	switch(dir){
+		case 0: if(skreen[x+1][y]==3) { score+=coin; return 1; } break;
+		case 1: if(skreen[x][y+1]==3) { score+=coin; return 1; } break;
+		case 2: if(skreen[x-1][y]==3) { score+=coin; return 1; } break;
+		case 3: if(skreen[x][y-1]==3) { score+=coin; return 1; } break;
+	}
 	switch(dir){
 		case 0: if(skreen[x+1][y]!=0) return 0; break;
 		case 1: if(skreen[x][y+1]!=0) return 0; break;
@@ -89,7 +82,7 @@ for(i=0;i<(w/b);i++){
 for(k=0;k<20;k++)
 	drawRundumLine();
 drawSkreen();
-window.onkeypress = function(event){
+window.onkeydown = function(event){
 	switch(event.keyCode){
 		case 37: movePc(2); break;
 		case 38: if(!chkPos(1)){ jmp = 1; setTimeout('jmp=0',2000); } break;
