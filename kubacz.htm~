@@ -89,7 +89,7 @@ for(i=0;i<(w/b);i++){
 for(k=0;k<20;k++)
 	drawRundumLine();
 drawSkreen();
-window.onkeydown = function(event){
+window.onkeypress = function(event){
 	switch(event.keyCode){
 		case 37: movePc(2); break;
 		case 38: if(!chkPos(1)){ jmp = 1; setTimeout('jmp=0',2000); } break;
