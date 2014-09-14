@@ -14,14 +14,18 @@ body {
 </head>
 <body>
 
-<p>PiXELMAИ ADVEИTUЯES // <span id='scorer'>0</span></p>
+<p>PiXELMAИ ADVEИTUЯES // <span id='scorer'>0</span> // LiFES: <span id='life'>3</span></p>
 <canvas height='480' width='640' id='kanwas'>
 </canvas>
 </body>
 <script>
+var ex = [];
+var ey = [];
+var life = 3;
 var botx = [];
 var boty = [];
 var botc = [];
+var bott = [];
 var score = 0;
 var coin = 1;
 var mov = 0;
@@ -33,6 +37,10 @@ var b = 8;
 var kanwas = document.getElementById('kanwas');
 var ktx = kanwas.getContext('2d');
 ktx.fillRect(0,0,kanwas.width,kanwas.height);
+var brickimg = new Image();
+brickimg.src = 'brick.png';
+var boneimg = new Image();
+boneimg.src = 'bones.png';
 var skreen = new Array();
 for(i=0;i<(w/b);i++){
 	skreen[i] = new Array();
@@ -49,23 +57,56 @@ function drawSkreen(){
 			if(skreen[i][j] == 1){
 				ktx.fillStyle = "#159";
 				ktx.fillRect(i*b,j*b,b,b);
+				/* ktx.drawImage(brickimg,i*b,j*b); */
 			} else if(skreen[i][j] == 2){
-				ktx.fillStyle = "#195";
+				ktx.fillStyle = "#FFF";
 				ktx.fillRect(i*b,j*b,b,b);
 			} else if(skreen[i][j] == 3){
 				ktx.fillStyle = "#991";
 				ktx.fillRect(i*b,j*b,b,b);
-			} else if((skreen[i][j] == 9)||(skreen[i][j] == 8)){
+			} else if(skreen[i][j] == 9){
 				ktx.fillStyle = "#911";
 				ktx.fillRect(i*b,j*b,b,b);
+				/* ktx.drawImage(boneimg,i*b,j*b); */
 			}
 		}
 	}	
 }
+function explodeIt(ox,oy){
+	ktx.fillStyle = '#F80';
+	ktx.fillRect((ox-4)*b,(oy-4)*b,b*9,b*9);
+	for(r=ox-5;r<ox+5;r++){
+		for(s=oy-5;s<oy+5;s++){
+			skreen[r][s] = 0;
+			for(p=0;p<botx.length;p++){
+				if((r==botx[p])&&(s==boty[p])){
+					botx.splice(p,1);
+					boty.splice(p,1);
+					botc.splice(p,1);
+					bott.splice(p,1);
+				}
+			}
+			if((r==x)&&(s==y)){
+				life --;
+				document.getElementById('life').innerHTML = life;
+			}
+		}
+	}
+}
 function moveNpc(){
 	for(p=0;p<botx.length;p++){
+		if((x==botx[p])&&(y==boty[p])){
+			life --;
+			document.getElementById('life').innerHTML = life;
+			score = 0;
+			document.getElementById('scorer').innerHTML = score;
+			botx.splice(p,1);
+			boty.splice(p,1);
+			botc.splice(p,1);
+			bott.splice(p,1);
+		}
 		if(skreen[botx[p]][boty[p]+1]==1){
-			if((Math.abs(boty[p] - y) <= 4)&&(Math.abs(botx[p] - x) <= 16)){
+			if((Math.abs(boty[p] - y) <= 4)&&(Math.abs(botx[p] - x) <= 16)&&(bott[p]==0)){
 				if(botc[p]==1){
 					skreen[botx[p]][boty[p]] = 3;
 				} else {
@@ -77,6 +118,14 @@ function moveNpc(){
 				if(skreen[botx[p]][boty[p]]==3){
 					botc[p] = 1;
 				}
+			}
+			if((Math.abs(boty[p] - y) <= 5)&&(Math.abs(botx[p] - x) <= 5)&&(bott[p]==1)){
+				setTimeout('explodeIt('+botx[p]+','+boty[p]+')',1000);
+				botx.splice(p,1);
+				boty.splice(p,1);
+				botc.splice(p,1);
+				bott.splice(p,1);
+				p--;
 			}
 		} else {
 			if(botc[p]==1){
@@ -114,7 +163,16 @@ function movePc(dir){
 			document.getElementById('scorer').innerHTML = score;
 		}
 		if(skreen[x][y]==9){
-			alert('gotcha');
+			life --;
+			document.getElementById('life').innerHTML = life;
+			for(p=0;p<botx.length;p++){
+				if((x==botx[p])&&(y==boty[p])){
+					botx.splice(p,1);
+					boty.splice(p,1);
+					botc.splice(p,1);
+					bott.splice(p,1);
+				}
+			}
 			score = 0;
 			document.getElementById('scorer').innerHTML = score;
 		}
@@ -153,11 +211,12 @@ for(i=0;i<(w/b);i++){
 }
 for(i=0;i<(w/b);i++){
 	for(j=0;j<(h/b);j++){
-		if((skreen[i][j] == 1)&&(Math.random()<0.02)){
+		if((skreen[i][j] == 1)&&(Math.random()<0.03)){
 			skreen[i][j-1] = 9;
 			botx.push(i);
 			boty.push(j-1);
 			botc.push(0);
+			bott.push((Math.random()<0.7 ? 0 : 1));
 		}
 	}
 }
@@ -179,7 +238,8 @@ window.onkeyup = function(event){
 setInterval('if(mov==1) movePc(4)',100);
 setInterval('if(mov==2) movePc(6)',100);
 setInterval('if(jmp==1) movePc(8)',100);
-setInterval('if(jmp==0) movePc(2)',150);
+setInterval('if(jmp==0) movePc(2)',100);
+setInterval('explodeIt()',1000);
 setInterval('moveNpc()',200);
 </script>
 </html>
