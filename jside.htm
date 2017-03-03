@@ -16,18 +16,20 @@ html, body {
 #toolbar {
 	position: block;
 	width: 100%;
-	background: #D8D8D8;
-	color: #222;
+	background: #111;
+	color: #FFF;
 }
-#toolbar div {
+.toolbar-item {
 	font: 400 12pt "Source Sans Pro", sans-serif;
 	padding: 6px;
 	cursor: pointer;
 	display: inline-block;
 }
-#toolbar div:hover {
-	color: #FFF;
-	background: #358;
+.toolbar-item:hover {
+	color: #0C4;
+	border-bottom: 2px solid #0c4;
+	padding-bottom: 4px;
+	background: #101411;
 }
 #editor {
 	margin: 0px;
@@ -56,13 +58,13 @@ html, body {
 <body>
 <div id=toolbar>
 	<span style='float:right' class='act'>
-	<div onclick='executor()'>Run (F9)</div>
-	<div onclick='elements.log.innerHTML = ""; elements.log.style.height = "1px"'>Clear log</div>
-	<div onclick='saveSlot()'>Save</div>
-	<div onclick='rmSlot()'>Delete</div>
+	<span class='toolbar-item' onclick='executor()'>Run (F9)</span>
+	<span class='toolbar-item' onclick='elements.log.innerHTML = ""; elements.log.style.height = "1px"'>Clear log</span>
+	<span class='toolbar-item' onclick='saveSlot()'>Save</span>
+	<span class='toolbar-item' onclick='rmSlot()'>Delete</span>
 	</span>
 	<span id=slots></span>
-	<div onclick='nowslot="NEWSLOT";document.querySelector("#editor").value=""; document.title="NEWSLOT // JSIDE"'>New</div>
+	<span class='toolbar-item' onclick='nowslot="NEWSLOT";document.querySelector("#editor").value=""; document.title="NEWSLOT // JSIDE"'>New</span>
 </div>
 <textarea id='editor' spellcheck='false'></textarea>
 <div id='log'></div>
@@ -80,7 +82,8 @@ var elements = {
 function slotMenu(){
 	document.querySelector('#slots').innerHTML = '';
 	for(i=0;i<ls.length;i++){
-		tmp = document.createElement('div');
+		tmp = document.createElement('span');
+		tmp.className = 'toolbar-item';
 		tmp.innerHTML = ls.key(i);
 		tmp.onclick = function(){ elements.editor.value = ls.getItem(this.innerHTML); nowslot = this.innerHTML; document.title = this.innerHTML+' // JSIDE' };
 		document.querySelector('#slots').appendChild(tmp);
@@ -102,7 +105,7 @@ function executor(){
 }
 
 function adaptivity(){
-	elements.editor.style.height = window.innerHeight - elements.toolbar.offsetHeight - elements.log.offsetHeight;
+	elements.editor.style.height = window.innerHeight - elements.toolbar.offsetHeight - elements.log.offsetHeight + 'px';
 }
 
 window.onkeyup = function(event){

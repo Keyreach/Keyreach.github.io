@@ -2,21 +2,24 @@
 <html>
 <head>
 <title>KUBATEST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset='utf-8'>
 <style>
 body {
 	background: #080808;
 	color: #CCC;
 	text-align: center;
-	font: 400 24pt keyrus;
+	font: 400 24pt keyrus, monospace;
 }
 #mobilecontrols {
 	box-sizing: border-box;
-	position: absolute;
-	bottom: 10;
+	position: fixed;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	text-align: center;
+	zIndex: 1;
+	padding-bottom: 8px;
 }
 #mobilecontrols button {
 	background: #FFF;
@@ -31,13 +34,14 @@ body {
 <body>
 
 <p>PiXELMAИ ADVEИTUЯES // <span id='scorer'>0</span> // LiFES: <span id='life'>3</span></p>
+<div id='mobilecontrols'>
+<button onclick='mov = 1; setTimeout("if(mov == 1){ mov=0; }",900);'>&larr;</button>
+<button onclick='if(!chkPos(2)){ jmp = 1; setTimeout("jmp=0",900); }'>JUMP</button>
+<button onclick='mov = 2; setTimeout("if(mov == 2){ mov=0; }",900);'>&rarr;</button>
+</div>
 <canvas height='480' width='640' id='kanwas'>
 </canvas>
-<div id='mobilecontrols'>
-<button onmousedown='mov = 1' onmouseup='move = 0'>&larr;</button>
-<button onclick='if(!chkPos(2)){ jmp = 1; setTimeout("jmp=0",900); }'>JUMP</button>
-<button onmousedown='mov = 2' onmouseup='mov = 0'>&rarr;</button>
-</div>
+
 </body>
 <script>
 var ex = [];
