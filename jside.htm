@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>JSIDE</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=480,user-scalable=false" />
 <style>
 * {
@@ -15,13 +15,11 @@ html, body {
 #toolbar {
 	position: block;
 	width: 100%;
-	height: 32px;
 	background: #D8D8D8;
 	color: #222;
 }
 #toolbar div {
-	font:400 12pt Roboto, Tahoma, sans-serif;
-	height: 100%;
+	font: 400 12pt "Source Sans Pro", sans-serif;
 	padding: 6px;
 	cursor: pointer;
 	display: inline-block;
@@ -32,9 +30,8 @@ html, body {
 }
 #editor {
 	margin: 0px;
-	font: 800 10pt "xos4 Terminus", Iosevka, Consolas, monospace;
+	font: 400 10pt "Source Code Pro", monospace;
 	padding: 8px;
-	height: calc(100% - 172px);
 	width: 100%;
 	border: 0;
 	border-bottom: 1px solid #888;
@@ -43,13 +40,15 @@ html, body {
 	tab-size: 4;
 }
 #log {
-	height: 140px;
+	height: 1px;
 	width: 100%;
-	font: 400 10pt Iosevka, Cousine, monospace;
+	font: 400 10pt "Source Code Pro", monospace;
 	padding: 8px;
 	overflow-y: scroll;
 	background: #222;
 	color: #ddd;
+	position: absolute;
+	bottom: 0;
 }
 </style>
 </head>
@@ -62,7 +61,7 @@ html, body {
 	<div onclick='rmSlot()'>Delete</div>
 	</span>
 	<span id=slots></span>
-	<div onclick='nowslot="NEWSLOT";document.querySelector("#editor").value=""; document.title="NEWSLOT // JSIDE"'>+</div>
+	<div onclick='nowslot="NEWSLOT";document.querySelector("#editor").value=""; document.title="NEWSLOT // JSIDE"'>New</div>
 </div>
 <textarea id='editor' spellcheck='false'></textarea>
 <div id='log'></div>
@@ -70,17 +69,24 @@ html, body {
 <script>
 var ls = localStorage;
 var nowslot = 'NEWSLOT';
+// elements
+var elements = {
+	'editor': document.getElementById("editor"),
+	'toolbar': document.getElementById("toolbar"),
+	'log': document.getElementById("log")
+}
+
 function slotMenu(){
 	document.querySelector('#slots').innerHTML = '';
 	for(i=0;i<ls.length;i++){
 		tmp = document.createElement('div');
 		tmp.innerHTML = ls.key(i);
-		tmp.onclick = function(){ document.querySelector('#editor').value = ls.getItem(this.innerHTML); nowslot = this.innerHTML; document.title = this.innerHTML+' // JSIDE' };
+		tmp.onclick = function(){ elements.editor.value = ls.getItem(this.innerHTML); nowslot = this.innerHTML; document.title = this.innerHTML+' // JSIDE' };
 		document.querySelector('#slots').appendChild(tmp);
 	}
 }
 function saveSlot(){
-	ls.setItem(prompt('Slot name',nowslot),document.querySelector('#editor').value);
+	ls.setItem(prompt('Slot name',nowslot), elements.editor.value);
 	slotMenu();
 }
 function rmSlot(){
@@ -88,17 +94,24 @@ function rmSlot(){
 	slotMenu();
 }
 function executor(){
+		elements.log.style.height = '1px';
 		sc = document.createElement('script');
-		sc.innerHTML = document.getElementById("editor").value;
+		sc.innerHTML = elements.editor.value;
 		document.head.appendChild(sc);
 }
+
+function adaptivity(){
+	elements.editor.style.height = window.innerHeight - elements.toolbar.offsetHeight - elements.log.offsetHeight;
+}
+
 window.onkeyup = function(event){
 	if(event.keyCode==120){ executor() };
 }
 window.onerror = function(message, url, linenumber){
-	document.getElementById('log').innerHTML = 'Error: '+message+' in '+url+' on line '+linenumber+'<br>' + document.getElementById('log').innerHTML;
+	elements.log.style.height = '40%';
+	elements.log.innerHTML = 'Error: '+message+' in '+url+' on line '+linenumber+'<br>' + elements.log.innerHTML;
 }
-document.getElementById('editor').onkeydown = function(event){
+elements.editor.onkeydown = function(event){
 	if(event.keyCode==9){
 		var start = this.selectionStart;
 		var end = this.selectionEnd;
@@ -107,6 +120,7 @@ document.getElementById('editor').onkeydown = function(event){
 		event.preventDefault();
 	}
 }
+adaptivity();
 slotMenu();
 </script>
 </html>

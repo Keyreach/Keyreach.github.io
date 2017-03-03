@@ -1,0 +1,53 @@
+html {
+	background: #000;
+}
+body {
+	font: 400 9pt "Iosevka", "Source Sans Pro", sans-serif;
+	max-width: 800px;
+	margin: 0 auto;
+	color: #FFF;
+}
+h1 {
+  padding: 0;
+  margin: 16px;
+}
+h1 a {
+  color: inherit;
+}
+.postblock {
+  background: #222;
+  padding: 12px;
+  margin: 8px;
+  color: #FFF;
+}
+.postlink {
+  color: inherit;
+  font-size: 1.5em;
+}
+.postinfo {
+  margin: 8px  0 4px;
+  padding: 0;
+  color: #888;
+}
+.postinfo a, .footer a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #FFF;
+}
+.tagblock {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 12px 12px;
+  margin: -12px;
+  text-align: right;
+  float: right;
+  min-width: 200px;
+}
+.taglink {
+  color: #a60;
+  margin-left: 8px;
+}
+.footer {
+	text-align: center;
+	color: #444;
+	margin: 16px 0;
+}

@@ -29,19 +29,19 @@
 		{
 			"title":	"Clock",
 			"url":		"/nikicz-clock.htm",
-			"info":		"Clock demo for Nikicz",
+			"info":		"JavaScript clock demo",
 			"tags":		["javascript", "nikicz"]
 		},
 		{
 			"title":	"Colour Square",
 			"url":		"/nikicz-colr.htm",
-			"info":		"Square changing colour demo for Nikicz",
+			"info":		"JavaScript square changing colour demo",
 			"tags":		["javascript", "nikicz"]
 		},
 		{
 			"title":	"Bouncing block",
 			"url":		"/nikicz-cubique.htm",
-			"info":		"Bouncing block demo for Nikicz",
+			"info":		"JavaScript bouncing block demo",
 			"tags":		["javascript", "nikicz"]
 		}
 	]
