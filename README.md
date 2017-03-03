@@ -1,4 +1,6 @@
 Keyreach.github.io
 ==================
 
-Personal site where I will upload some small projects
+Personal site for small projects and js demos
+
+[Go there](http://keyreach.github.io)

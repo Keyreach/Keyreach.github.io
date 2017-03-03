@@ -31,12 +31,12 @@
 			  color: inherit;
 			  font-size: 1.5em;
 			}
-			.postinfo {
+			.postinfo, .footer {
 			  margin: 8px  0 4px;
 			  padding: 0;
 			  color: #888;
 			}
-			.postinfo a {
+			.postinfo a, .footer a {
 			  text-decoration: none;
 			  font-weight: bold;
 			  color: #FFF;
@@ -68,7 +68,7 @@
 		  }
 			document.title = page.title;
 			var header = document.createElement('h1');
-			header.innerHTML = '<a href="/test.htm">' + page.title + '</a>';
+			header.innerHTML = '<a href="/">' + page.title + '</a>';
 			document.body.appendChild(header);
 			for(var i in page.posts){
 			  if((tagged != '') && (page.posts[i].tags.indexOf(tagged) == -1))
@@ -96,6 +96,10 @@
 			  }
 			  document.body.appendChild(postbloc);
 			}
+			var footer = document.createElement('div');
+			footer.className = 'footer';
+			footer.innerHTML = markRwd(page.posts[i].info);
+			document.body.appendChild(footer);
 		}
 
 		var xhr = new XMLHttpRequest();
