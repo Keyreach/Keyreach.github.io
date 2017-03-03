@@ -1,51 +1,110 @@
+<!doctype hmtl>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta name="viewport" content="width=480,user-scalable=false" />
-<title>keyreach</title>
-<style>
-html {
-	background: #DDD;
-}
-body {
-	box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
-	max-width: 800px;
-	margin: 0 auto 16px;
-	font: 400 10pt Clear Sans, Roboto, Arial, sans;
-	padding: 0 16px 16px;
-	background: #FFF;
-	color: #111;
-}
-h1 {
-	margin: 0;
-	padding: 16px 0;
-}
-a {
-	display: block;
-	font: 600 14pt Clear Sans, Roboto, Arial, sans;
-	text-decoration: none;
-	color: #000;
-}
-p {
-	color: #333;
-}
-</style>
-</head>
-<body>
-<h1>keyreach's stuff</h1>
-<a href=jside.htm>jside</a>
-<p>tool to quick creation of javascript code snippets</p>
-<a href=kq_index.htm>konquest</a>
-<p>turn-based strategy about conquest of galaxy featuring hotseat mode</p>
-<a href=thelife.htm>thelife</a>
-<p>nothing special, just realisation of conway's game of life</p>
-<a href=b-race.htm>b-race</a>
-<p>abandoned scroller-race</p>
-<a href=matlab.htm>matlab stuff</a>
-<p>various computational science stuff for matlab</p>
-<a href=nikicz.htm>nikicz's corner</a>
-<p>useless html/css/js demos</p>
-<a href=profile.htm>about me</a>
-<p>some information about me</p>
-</body>
+	<head>
+		<meta charset='utf-8'>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>JJJS</title>
+		<style>
+		  html {
+		    background: #000;
+		  }
+			body {
+				font: 400 10pt "Iosevka", sans-serif;
+				max-width: 800px;
+				margin: 0 auto;
+				color: #FFF;
+			}
+			h1 {
+			  padding: 0;
+			  margin: 16px;
+			}
+			h1 a {
+			  color: inherit;
+			}
+			.postblock {
+			  background: #222;
+			  padding: 12px;
+			  margin: 8px;
+			  color: #FFF;
+			}
+			.postlink {
+			  color: inherit;
+			  font-size: 1.5em;
+			}
+			.postinfo {
+			  margin: 8px  0 4px;
+			  padding: 0;
+			  color: #888;
+			}
+			.postinfo a {
+			  text-decoration: none;
+			  font-weight: bold;
+			  color: #FFF;
+			}
+			.tagblock {
+			  background: rgba(0, 0, 0, 0.5);
+			  padding: 8px 12px 12px;
+			  margin: -12px;
+			  text-align: right;
+			  float: right;
+			  min-width: 200px;
+			}
+			.taglink {
+			  color: #a60;
+			  margin-left: 8px;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script type='text/javascript'>
+	  function markRwd(text){
+	    return text.replace(/([^\s>]*)>>([^\s]*)/g,'<a href="$2">$1</a>');
+	  }
+		function renderPage(page){
+		  var tagged = '';
+		  if(location.href.indexOf('?') != -1){
+		    tagged = location.href.substr(location.href.indexOf('tagged=') + 7);
+		  }
+			document.title = page.title;
+			var header = document.createElement('h1');
+			header.innerHTML = '<a href="/test.htm">' + page.title + '</a>';
+			document.body.appendChild(header);
+			for(var i in page.posts){
+			  if((tagged != '') && (page.posts[i].tags.indexOf(tagged) == -1))
+			    continue;
+			  var postbloc = document.createElement('div');
+			  postbloc.className = 'postblock';
+			  var tagblock = document.createElement('div');
+			  tagblock.className = 'tagblock';
+			  var postlink = document.createElement('a');
+			  postlink.className = 'postlink';
+			  postlink.href = page.posts[i].url;
+			  postlink.innerHTML = page.posts[i].title;
+			  var postinfo = document.createElement('p');
+			  postinfo.className = 'postInfo';
+			  postinfo.innerHTML = markRwd(page.posts[i].info);
+			  postbloc.appendChild(tagblock);
+			  postbloc.appendChild(postlink);
+			  postbloc.appendChild(postinfo);
+			  for(var j in page.posts[i].tags){
+			    var taglink = document.createElement('a');
+			    taglink.className = 'taglink';
+			    taglink.href = '?tagged='+page.posts[i].tags[j];
+			    taglink.innerHTML = page.posts[i].tags[j];
+			    tagblock.appendChild(taglink);
+			  }
+			  document.body.appendChild(postbloc);
+			}
+		}
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET','content.json');
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4){
+				renderPage(JSON.parse(xhr.responseText));
+			}
+		}
+		xhr.send();
+	</script>
 </html>

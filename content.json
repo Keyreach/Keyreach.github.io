@@ -1,0 +1,47 @@
+{
+	"title": "keyreach.github.io",
+	"posts": [
+		{
+			"title":	"JSIDE",
+			"url":		"/jside.htm",
+			"info":		"Tool to quick creation of javascript code snippets",
+			"tags":		["javascript", "coding"]
+		},
+		{
+			"title":	"Konquest",
+			"url":		"/kq_index.htm",
+			"info":		"turn-based strategy about conquest of galaxy featuring hotseat mode",
+			"tags":		["javascript", "game"]
+		},
+		{
+			"title":	"TheLife",
+			"url":		"/thelife.htm",
+			"info":		"nothing special, just realisation of conway's game of life",
+			"tags":		["javascript", "game"]
+		},
+		{
+			"title":	"Pixelman demo",
+			"url":		"/kubacz.htm",
+			"info":		"Early platformer demo",
+			"tags":		["javascript", "game"]
+		},
+		{
+			"title":	"Clock",
+			"url":		"/nikicz-clock.htm",
+			"info":		"Clock demo for Nikicz",
+			"tags":		["javascript", "nikicz"]
+		},
+		{
+			"title":	"Colour Square",
+			"url":		"/nikicz-colr.htm",
+			"info":		"Square changing colour demo for Nikicz",
+			"tags":		["javascript", "nikicz"]
+		},
+		{
+			"title":	"Bouncing block",
+			"url":		"/nikicz-cubique.htm",
+			"info":		"Bouncing block demo for Nikicz",
+			"tags":		["javascript", "nikicz"]
+		},
+	]
+}
