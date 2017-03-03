@@ -43,6 +43,12 @@
 			"url":		"/nikicz-cubique.htm",
 			"info":		"JavaScript bouncing block demo",
 			"tags":		["javascript", "nikicz"]
+		},
+		{
+			"title":	"Listvwa widget",
+			"url":		"/listvwa.htm",
+			"info":		"Javascript widget similar to multiline select",
+			"tags":		["javascript", "library"]
 		}
 	]
 }

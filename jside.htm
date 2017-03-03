@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 <head>
 <title>JSIDE</title>
@@ -56,7 +57,7 @@ html, body {
 <div id=toolbar>
 	<span style='float:right' class='act'>
 	<div onclick='executor()'>Run (F9)</div>
-	<div onclick='document.querySelector("#log").innerHTML=""'>Clear log</div>
+	<div onclick='elements.log.innerHTML = ""; elements.log.style.height = "1px"'>Clear log</div>
 	<div onclick='saveSlot()'>Save</div>
 	<div onclick='rmSlot()'>Delete</div>
 	</span>
@@ -107,10 +108,16 @@ function adaptivity(){
 window.onkeyup = function(event){
 	if(event.keyCode==120){ executor() };
 }
+
 window.onerror = function(message, url, linenumber){
 	elements.log.style.height = '40%';
 	elements.log.innerHTML = 'Error: '+message+' in '+url+' on line '+linenumber+'<br>' + elements.log.innerHTML;
 }
+
+window.onresize = function(){
+	adaptivity();
+}
+
 elements.editor.onkeydown = function(event){
 	if(event.keyCode==9){
 		var start = this.selectionStart;

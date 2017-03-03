@@ -1,16 +1,11 @@
-<!doctype hmtl>
+<!doctype html>
 <html>
 	<head>
 		<meta charset='utf-8'>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>JJJS</title>
 		<link rel='stylesheet' type='text/css' href='main.css'>
-	</head>
-	<body>
-		<h1>Oops</h1>
-		<p>It seems you're using javascript incapable browser. Proceed <a href='i.use.lynx.html'>here</a> for decent HTML 3.0 page.</p>
-	</body>
-	<script type='text/javascript'>
+			<script type='text/javascript'>
 	  function markRwd(text){
 	    return text.replace(/([^\s>]*)>>([^\s]*)/g,'<a href="$2">$1</a>');
 	  }
@@ -55,14 +50,22 @@
 			footer.innerHTML = markRwd(page.footer);
 			document.body.appendChild(footer);
 		}
-
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET','content.json');
-		xhr.onreadystatechange = function(){
-			if(xhr.readyState == 4){
-				renderPage(JSON.parse(xhr.responseText));
+		document.addEventListener('DOMContentLoaded',
+			function(){
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET','content.json');
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4){
+						renderPage(JSON.parse(xhr.responseText));
+					}
+				}
+				xhr.send();
 			}
-		}
-		xhr.send();
+		);
 	</script>
+	</head>
+	<body>
+		<h1>Oops</h1>
+		<p>It seems you're using javascript incapable browser. Proceed <a href='i.use.lynx.html'>here</a> for decent HTML 3.0 page.</p>
+	</body>
 </html>

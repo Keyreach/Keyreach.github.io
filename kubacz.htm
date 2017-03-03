@@ -10,6 +10,22 @@ body {
 	text-align: center;
 	font: 400 24pt keyrus;
 }
+#mobilecontrols {
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 10;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+#mobilecontrols button {
+	background: #FFF;
+	color: #000;
+	border: 0;
+	width: 25%;
+	height: 3em;
+}
+
 </style>
 </head>
 <body>
@@ -17,6 +33,11 @@ body {
 <p>PiXELMAИ ADVEИTUЯES // <span id='scorer'>0</span> // LiFES: <span id='life'>3</span></p>
 <canvas height='480' width='640' id='kanwas'>
 </canvas>
+<div id='mobilecontrols'>
+<button onmousedown='mov = 1' onmouseup='move = 0'>&larr;</button>
+<button onclick='if(!chkPos(2)){ jmp = 1; setTimeout("jmp=0",900); }'>JUMP</button>
+<button onmousedown='mov = 2' onmouseup='mov = 0'>&rarr;</button>
+</div>
 </body>
 <script>
 var ex = [];

@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Listvwa</title>
+<style>
+body				{ font-family: Source Sans Pro, sans-serif; }
+h1					{ text-align: center; }
+table				{ width: 100%; }
+td					{ vertical-align: top; padding: 8px; }
+code				{ white-space: pre-wrap; font: 400 9pt Source Code Pro, monospace; display: block; background: #000; color: #CFD; padding: 8px; margin: 8px 0; }
+.listview			{ border: 1px solid #888; padding: 2px; margin: 4px; font: 400 11pt Source Sans Pro, sans-serif; overflow-y: scroll; overflow-x: hidden; width: 100%; }
+.listview-item		{ padding: 6px; }
+.listview-hilite	{ background: #06A; color: #FFF; }
+</style>
+</head>
+<body>
+<h1>Listvw(a)</h1>
+<table>
+	<tr>
+		<td style='width: 50%'>
+			<h2>Description</h2>
+			<p>
+				Listvw.js is a tiny library for creating functional listviews.
+			</p>
+			<p>
+				Features:
+				<ul>
+					<li>&lt;select&gt;-like behaviour</li>
+					<li>mobile devices support</li>
+					<li>css class for list items</li>
+					<li>import and export data from/to array</li>
+				</ul>
+			</p>
+			<p>
+				Example usage:
+<code>var mydata = [ 0, 1, 2, 3 ];
+var mylist = mkListVw(document.querySelector('#listcontainer'));
+mylist.loadFromArray(mydata);
+mylist.addEventListener('dblclick',
+	function(){ doAction(this.selectedIndex, this.getValue()); }
+);</code>
+			</p>
+		</td>
+		<td>
+			<h2>Try it</h2>
+			<div id='theList'></div>
+			<button onclick='thatList.removeOption(thatList.selectedIndex)'>Remove</button>
+		</td>
+	</tr>
+</table>
+</body>
+<script type='text/javascript' src='listvw.js'></script>
+<script type='text/javascript'>
+var thatList = mkListView(document.getElementById('theList'));
+thatList.style.height = (window.innerHeight/2);
+for(var i = 0; i < 20; i++){
+	thatList.addOption(Math.pow(2, i), i);
+}
+thatList.ondblclick = function(){
+	alert(this.selectedValue());
+}
+</script>
+</html>
