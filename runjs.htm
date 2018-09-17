@@ -1,0 +1,219 @@
+<!doctype html>
+<meta charset='utf-8' />
+<title>Run JS</title>
+<style>
+html {
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+.wrap {
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-pack: start;
+	flex-direction: column;
+	justify-content: flex-start;
+	height: 100%;
+	box-sizing: border-box;
+}
+.toolbar {
+	box-sizing: border-box;
+	padding: 8px;
+}
+.workspace {
+	box-sizing: border-box;
+	display: flex;
+	height: 100px;
+}
+.stretch {
+	flex-grow: 1;
+	-webkit-box-flex: 1.0;
+}
+.log {
+    position: relative;
+    overflow: hidden;
+    height: 64px;
+}
+.log-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+.log > textarea {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+button {
+	min-width: 96px;
+	padding: 8px 16px;
+	background-color: rgba(0, 0, 0, 0.1);
+	color: #000;
+	font: 700 14px "Segoe UI", sans-serif;
+	border-radius: 8px;
+	border: 0;
+	cursor: pointer;
+}
+button:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+button.dark {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+button.dark:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+textarea {
+	margin: 0;
+	resize: none;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding: 8px;
+	border: 0;
+	/* border-top: 1px solid #CCC; */
+	font: 400 16px Cousine, Lucida Console, monospace;
+	line-height: 1.4em;
+}
+#codeEditor {
+	box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+#scriptOutput {
+	background: #000;
+	color: #F96;
+	font-size: 18px;
+}
+</style>
+<script data-required='true'>
+function extendEditor(event){
+	if(event.keyCode == 9){
+		// -- going to handle tab insert
+		var editor = event.target;
+		var pos = editor.selectionStart;
+		editor.value = editor.value.substr(0, pos) + '    ' + editor.value.substr(pos);
+		editor.selectionStart = editor.selectionEnd = pos + 4;
+		event.preventDefault();
+	} else if(event.keyCode == 13) {
+		var editor = event.target;
+		var pos = editor.selectionStart;
+		var lineStart = editor.value.substr(0, pos).lastIndexOf('\n');
+		lineStart = (lineStart == -1 ? 0 : lineStart + 1);
+		var leadingSpaces = editor.value.substring(lineStart, pos).match(/^[\s]*/)[0];
+		editor.value = editor.value.substr(0, pos) + '\n' + leadingSpaces + editor.value.substr(pos);
+		editor.selectionStart = editor.selectionEnd = pos + leadingSpaces.length + 1;
+		event.preventDefault();
+	}
+}
+var timers = {
+	timers: [],
+	timeout: function(f){ return function(){
+        var result = f.apply(window, arguments);
+		timers.timers.push(result);
+        return result;
+	}}(window.setTimeout),
+    interval: function(f){ return function(){
+        var result = f.apply(window, arguments);
+		timers.timers.push(result);
+        return result;
+	}}(window.setInterval),
+    clear: function(){
+        for(var i in this.timers){
+            clearTimeout(this.timers[i]);
+        }
+    }
+}
+window.setTimeout = timers.timeout;
+window.setInterval = timers.interval;
+var io = {
+	messages: [],
+	print: function(o){
+		if(typeof o == 'object'){
+			this.messages.push(JSON.stringify(o));
+		} else {
+			this.messages.push(o.toString());
+		}
+		testbox.part.output.value = this.messages.join('\n');
+	},
+	clear: function(){
+		this.messages = [];
+		testbox.part.output.value = '';
+	}
+}
+var testbox = {
+	part: {},
+	load: function(){
+		testbox.part.editor.value = localStorage.getItem('run-js-stash');
+	},
+	save: function(){
+		localStorage.setItem('run-js-stash', testbox.part.editor.value);
+	},
+	run: function(){
+        timers.clear();
+		testbox.cleanup();
+		io.print('Cleaning up...');
+		var code = testbox.part.editor.value;
+		var scriptTag = document.createElement('script');
+		scriptTag.innerHTML = '(function(){' + code + '})()';
+		io.print('Loading...');
+		document.head.appendChild(scriptTag);
+	},
+	cleanup: function(){
+		var scripts = document.getElementsByTagName('script');
+		Array.prototype.slice.call(scripts).forEach(function(script){
+			if(script.getAttribute('data-required') != 'true'){
+				script.parentNode.removeChild(script);
+			}
+		});
+		io.clear();
+	},
+	toggleOutput: function(){
+			testbox.part.output.parentNode.classList.toggle('stretch');
+	},
+	showErrors: function(){
+			testbox.part.errors.parentNode.style.display = 'block';
+	},
+	hideErrors: function(){
+			testbox.part.errors.parentNode.style.display = 'none';
+	}
+}
+window.onerror = function(message, location, line, column){
+  testbox.showErrors();
+  testbox.part.errors.value = line + ',' + column + ': error: ' + message;
+}
+document.addEventListener('DOMContentLoaded', function(){
+	var links = {
+		editor: 'codeEditor',
+		output: 'scriptOutput',
+		errors: 'errorsOutput'
+	}
+	for(var k in links){ testbox.part[k] = document.getElementById(links[k]); }
+	testbox.hideErrors();
+	testbox.part.editor.onkeydown = extendEditor;
+})
+</script>
+<div class='wrap'>
+	<div class='toolbar'>
+		<button onclick='testbox.run()'>Run</button>
+		<div style='float: right'>
+			<button onclick='testbox.load()'>Load</button>
+			<button onclick='testbox.save()'>Save</button>
+		</div>
+	</div>
+	<div class='workspace stretch'>
+		<textarea id='codeEditor'></textarea>
+	</div>
+    <div class='log'>
+		<textarea id='scriptOutput'></textarea>
+		<button class='log-button dark' onclick='testbox.toggleOutput()'>expand/collapse</button>
+	</div>
+	<div class='log stretch'>
+		<textarea id='errorsOutput'></textarea>
+		<button class='log-button' onclick='testbox.hideErrors()'>hide</button>
+	</div>
+</div>

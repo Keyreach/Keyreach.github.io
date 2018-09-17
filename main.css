@@ -1,8 +1,8 @@
 html {
-	background: #000;
+	background: #181818;
 }
 body {
-	font: 400 9pt "Iosevka", "Source Sans Pro", sans-serif;
+	font: 400 10pt "Source Sans Pro", sans-serif;
 	max-width: 800px;
 	margin: 0 auto;
 	color: #FFF;
@@ -15,7 +15,7 @@ h1 a {
   color: inherit;
 }
 .postblock {
-  background: #222;
+  background: #111;
   padding: 12px;
   margin: 8px;
   color: #FFF;
@@ -23,6 +23,7 @@ h1 a {
 .postlink {
   color: inherit;
   font-size: 1.5em;
+  font-weight: bold;
 }
 .postinfo {
   margin: 8px  0 4px;
@@ -35,7 +36,6 @@ h1 a {
   color: #FFF;
 }
 .tagblock {
-  background: rgba(0, 0, 0, 0.5);
   padding: 8px 12px 12px;
   margin: -12px;
   text-align: right;

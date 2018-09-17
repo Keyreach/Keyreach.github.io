@@ -1,0 +1,22 @@
+html {
+	background: #DDD;
+}
+body {
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	font: 400 11pt "Source Sans Pro", sans-serif;
+	background: #FFF;
+	padding: 20px;
+}
+code, pre {
+	font: 400 10pt "Source Code Pro", monospace;
+}
+dt {
+	font-weight: bold;
+	font-size: 1.1em;
+	margin: 10px 0;
+}
+h1, h2, h3, p {
+	margin: 0 0 20px;
+}

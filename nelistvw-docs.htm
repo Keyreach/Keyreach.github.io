@@ -1,0 +1,38 @@
+<!doctype html>
+<head>
+ <title>nelistvw.js</title>
+ <meta charset='utf-8' />
+ <link rel='stylesheet' href='docs.css'>
+</head>
+<body>
+ <h1>nelistvw.js docs</h1>
+ <p><a href='nelistvw.js'>Get nelistvw.js</a></p>
+ <h2>Usage</h2>
+ <pre>var listview = new neListVw(options)</pre>
+ <h2>Options</h2>
+ <h3>options</h3>
+ <p>Type: object</p>
+ <h4>Keys:</h4>
+ <dl>
+ <dt>elem</dt>
+ <dd>HTMLElement, where listview will be mounted</dd>
+ <dt>multi</dt>
+ <dd>Boolean, defining if it is possible to select multiple items</dd>
+ <dt>key</dt>
+ <dd>String, key in dataset, which will be used for identifying items, e.g. for <code>.value</code> setter</dd>
+ <dt>columns</dt>
+ <dd>Function, called with HTML element, dataset item and index passed</dd>
+ <dd>Object, where keys are keys in dataset, and value is either function that will be applied to dataset value with corresponding key or object, containing this function as 'filter' and applied styles as 'style'</dd>
+ <dt>style</dt>
+ <dd>Object, containing keys 'normal' and 'selected', representing CSS class used for all and selected items</dd>
+ </dl>
+ <h2>Methods</h2>
+ <h3>.render()</h3>
+ <p>Force redraw widget</p>
+ <h3>.update(data)</h3>
+ <p>Update dataset</p>
+ <h3>.add(item)</h3>
+ <p>Add item to dataset</p>
+ <h3>.cut(index)</h3>
+ <p>Cut item from dataset</p>
+</body>

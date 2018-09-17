@@ -3,51 +3,33 @@
 	"footer": "&copy; keyreach@github>>https://github.com/keyreach/ Built using myOwnSecretTechnique.",
 	"posts": [
 		{
-			"title":	"JSIDE",
-			"url":		"/jside.htm",
-			"info":		"Tool to quick creation of javascript code snippets",
+			"title":	"Runjs",
+			"url":		"runjs.htm",
+			"info":		"Run Javascript snippets",
 			"tags":		["javascript", "coding"]
 		},
 		{
 			"title":	"Konquest",
-			"url":		"/kq_index.htm",
+			"url":		"kq_index.htm",
 			"info":		"turn-based strategy about conquest of galaxy featuring hotseat mode",
 			"tags":		["javascript", "game"]
 		},
 		{
 			"title":	"TheLife",
-			"url":		"/thelife.htm",
+			"url":		"thelife.htm",
 			"info":		"nothing special, just realisation of conway's game of life",
 			"tags":		["javascript", "game"]
 		},
 		{
-			"title":	"Pixelman demo",
-			"url":		"/kubacz.htm",
-			"info":		"Early platformer demo",
-			"tags":		["javascript", "game"]
-		},
-		{
-			"title":	"Clock",
-			"url":		"/nikicz-clock.htm",
-			"info":		"JavaScript clock demo",
-			"tags":		["javascript", "nikicz"]
-		},
-		{
-			"title":	"Colour Square",
-			"url":		"/nikicz-colr.htm",
-			"info":		"JavaScript square changing colour demo",
-			"tags":		["javascript", "nikicz"]
-		},
-		{
-			"title":	"Bouncing block",
-			"url":		"/nikicz-cubique.htm",
-			"info":		"JavaScript bouncing block demo",
-			"tags":		["javascript", "nikicz"]
-		},
-		{
-			"title":	"Listvwa widget",
-			"url":		"/listvwa.htm",
+			"title":	"nelistvw.js Docs",
+			"url":		"nelistvw-docs.htm",
 			"info":		"Javascript widget similar to multiline select",
+			"tags":		["javascript", "library"]
+		},
+		{
+			"title":	"fu.js library",
+			"url":		"fu.js",
+			"info":		"Promise-like library with utilities that works in IE9",
 			"tags":		["javascript", "library"]
 		}
 	]

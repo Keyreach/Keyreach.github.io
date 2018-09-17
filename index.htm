@@ -17,7 +17,7 @@
 		  }
 			document.title = page.title;
 			var header = document.createElement('h1');
-			header.innerHTML = '<a href="/">' + page.title + '</a>';
+			header.innerHTML = '<a href="index.htm">' + page.title + '</a>';
 			document.body.appendChild(header);
 			for(var i in page.posts){
 			  if((tagged != '') && (page.posts[i].tags.indexOf(tagged) == -1))
@@ -31,7 +31,7 @@
 			  postlink.href = page.posts[i].url;
 			  postlink.innerHTML = page.posts[i].title;
 			  var postinfo = document.createElement('p');
-			  postinfo.className = 'postInfo';
+			  postinfo.className = 'postinfo';
 			  postinfo.innerHTML = markRwd(page.posts[i].info);
 			  postbloc.appendChild(tagblock);
 			  postbloc.appendChild(postlink);
