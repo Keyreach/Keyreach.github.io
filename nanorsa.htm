@@ -1,0 +1,117 @@
+<!doctype html>
+<meta charset='utf-8' />
+<title>nanoRSA</title>
+<style>
+	body {
+		font-family: "Arial", sans-serif;
+	}
+	textarea {
+		width: 640px;
+		height: 480px;
+		border: 1px solid #CCC;
+		background: #FFF;
+		padding: 5px;
+		box-sizing: border-box;
+	}
+	input {
+		border: 1px solid #CCC;
+		background: #FFF;
+		padding: 5px;
+		box-sizing: border-box;
+		font-family: monospace;
+	}
+	button {
+		border: 1px solid #CCC;
+		background: #E0E0E0;
+		padding: 5px 15px;
+		box-sizing: border-box;
+	}
+	button:active {
+		background: #D0D0D0;
+	}
+	dl {
+		margin: 0;
+	}
+	dt {
+		display: inline-block;
+		width: 100px;
+		font-weight: bold;
+	}
+	dd {
+		display: inline-block;
+	}
+</style>
+<script src='nanorsa2.js'></script>
+<script>
+function enckey(k){ return k.map(x => x.toString(16)).join('.').toUpperCase(); }
+function deckey(k){ return k.split('.').map(x => parseInt(x, 16)); }
+function $(id){ return document.getElementById(id); }
+function getKeys(){
+	if(($('nanorsa__prvkey').value.trim() === '') && ($('nanorsa__pubkey').value.trim() === '')){
+		var keys = nanoRSA.generateKeys();
+		$('nanorsa__pubkey').value = enckey(keys.public);
+		$('nanorsa__prvkey').value = enckey(keys.private);
+	} else {
+		var keys = {
+			public: deckey($('nanorsa__pubkey').value),
+			private: deckey($('nanorsa__prvkey').value),
+		}
+	}
+	return keys;
+}
+document.addEventListener('DOMContentLoaded', function(){
+    $('nanorsa__generate').onclick = function(){
+		getKeys();
+	};
+	$('nanorsa__encode').onclick = function(){
+		var kees = getKeys();
+		$('nanorsa__codedtext').value = nanoRSA.encodeString(kees.public, $('nanorsa__cleartext').value);
+	};
+	$('nanorsa__decode').onclick = function(){
+		var kees = getKeys();
+		$('nanorsa__cleartext').value = nanoRSA.decodeString(kees.private, $('nanorsa__codedtext').value);
+	};
+});
+</script>
+<body>
+<table>
+	<tr>
+		<td>
+			<big>nanoRSA - asymmetric cryptography demo using RSA algorithm</big></br>
+			Keys will be generated automatically, if you'll try encode without keys passed.
+		</td>
+		<td>
+		    <table style='width: 100%'>
+		        <tr>
+		            <td>Public Key</td>
+		            <td><input id='nanorsa__pubkey' type='text' style='width: 100%'></td>
+		        </tr>
+		        <tr>
+		            <td>Private Key</td>
+		            <td><input id='nanorsa__prvkey' type='text' style='width: 100%'></td>
+		        </tr>
+		        <tr>
+		            <td></td>
+		            <td style='text-align: right'>
+		                <button id='nanorsa__generate'>Generate keys</button>
+		                <button id='nanorsa__encode'>Encrypt</button>
+					    <button id='nanorsa__decode'>Decrypt</button>
+		            </td>
+		        </tr>
+		    </table>
+		</td>
+	</tr>
+	<tr>
+		<td>Clear Text</td>
+		<td>Encrypted Text</td>
+	</tr>
+	<tr>
+		<td>
+			<textarea id='nanorsa__cleartext'></textarea>
+		</td>
+		<td>
+			<textarea id='nanorsa__codedtext'></textarea>
+		</td>
+	</tr>
+</table>
+</body>

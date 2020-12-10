@@ -9,6 +9,24 @@
 			"tags":		["javascript", "coding"]
 		},
 		{
+		    "title":    "nanorsa",
+		    "url":      "nanorsa.htm",
+		    "info":     "Simple encyption tool using RSA algorithm",
+		    "tags":     ["algorithms", "cryptography"]
+		},
+		{
+		    "title":    "[De]compressor",
+		    "url":      "compressor.htm",
+		    "info":     "Simple compressor/decompressor using LZ77 variant",
+		    "tags":     ["algorithms", "compression"]
+		},
+		{
+		    "title":    "TabProc",
+		    "url":      "tabproc.htm",
+		    "info":     "Simple spreadsheet processor with RPN expressions",
+		    "tags":     ["coding"]
+		},
+		{
 			"title":	"Konquest",
 			"url":		"kq_index.htm",
 			"info":		"turn-based strategy about conquest of galaxy featuring hotseat mode",
@@ -18,7 +36,7 @@
 			"title":	"TheLife",
 			"url":		"thelife.htm",
 			"info":		"nothing special, just realisation of conway's game of life",
-			"tags":		["javascript", "game"]
+			"tags":		["javascript", "game", "algorithms"]
 		},
 		{
 			"title":	"nelistvw.js Docs",

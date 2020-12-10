@@ -1,0 +1,224 @@
+<!doctype html>
+<meta charset='utf-8' />
+<title>Spreadsheet editor</title>
+<style>
+body {
+  font: 400 10pt "Liberation Sans", "Arial", sans-serif;
+}
+td {
+	max-width: 96px;
+	border: 1px solid #ccc;
+    padding: 0px;
+}
+table {
+	border-collapse: collapse;
+}
+td input {
+	max-width: 100%;
+	box-sizing: border-box;
+	border: 0;
+	padding: 4px;
+	background: transparent;
+	font: 400 10pt 'Source Code Pro', monospace;
+	text-align: left;
+}
+</style>
+<div>spreadsheet_processor</div>
+<table id='tab1'></table>
+<h3>Simple spreadsheet processor</h3>
+<ul>
+<li>If cell starts with "!" it will be calculated as RPN expression (supported operators + - * /)</li>
+<li>In expression, cells can be referenced as $&lt;num&gt;</li>
+<li>Dependent cells are tracked for "computed" cells, so if some cell value has been changed or recomputed, only dependent cells will be recomputed</li>
+<li>Complex circular references aren't handled, so they will hang your browser</li>
+</ul>
+<p>Example of computable expression: <code>!$4 3600 / $5 *</code></p>
+<!--
+TODO
+ * lock cell
+ * calculated option 1
+   * simpler cell model value + displayValue
+     * manual update updates value
+     * in some (?) cases this updates displayValue
+   * listen cell update events
+ * calculated option 2
+   * cell have context (cell address)
+   * cell have computing method
+-->
+<!--
+    manual => [ parse ] => value => [ format/compute ] => displayValue
+    method => value => [ format/compute ] => displayValue
+    (?) method => displayValue
+    (?) method => [ format/compute ]
+    method <= value
+    method <= displayValue <= [ format/compute ] <= value
+-->
+<script>
+function EventEmitter() {
+    this.listeners = [];
+    this.on = function(event, callback) {
+        this.listeners.push([event, callback]);
+    };
+    this.trigger = function(event, data) {
+        for(var i = 0; i < this.listeners.length; i++) {
+            if(this.listeners[i][0] == event) {
+                this.listeners[i][1](data);
+            }
+        }
+    };
+}
+
+function MutableField(defaultValue, computeFunc) {
+    EventEmitter.call(this);
+    var fieldValue = defaultValue;
+    var self = this;
+    var container = document.createElement('div');
+    container.style.padding = '2px 4px';
+    container.style.border = '1px solid transparent';
+    container.style.boxSizing = 'border-box';
+    var fieldInput = document.createElement('input');
+    fieldInput.addEventListener('focus', function(){
+        this.value = fieldValue;
+        container.style.borderColor = '#08F';
+    });
+    fieldInput.addEventListener('blur', function(){
+        fieldValue = this.value;
+        if(computeFunc){
+            self._updateDisplay();
+        }
+        container.style.borderColor = 'transparent';
+        self.trigger('update', fieldValue);
+    });
+    fieldInput.value = defaultValue;
+
+    this.hilite = function(colour) {
+        container.style.backgroundColor = colour;
+    };
+
+    this._updateDisplay = function(value){
+        if(value === undefined){
+            value = computeFunc.call(this, fieldValue);
+        }
+        fieldInput.value = (typeof value !== 'number' ? value : value.toString());
+    };
+    
+    this.val = function(value) {
+        if(value === 'undefined')
+            return fieldValue;
+        fieldValue = value;
+        this._updateDisplay();
+        this.trigger('update', fieldValue);
+    };
+
+    this.readOutput = function() {
+        var computed = computeFunc ? computeFunc.call(this, fieldValue) : fieldValue;
+        this._updateDisplay(computed);
+        return computed;
+    }
+
+    container.appendChild(fieldInput);
+    this.elem = container;
+}
+
+var binder = {
+    links: {},
+    registerUpstreams: function(target, sources){
+        for(var src of sources) {
+            if((src in this.links) && (this.links[src].indexOf(target) != -1))
+                throw Error('Circular reference');
+        }
+        this.links[target] = sources;
+    },
+    updated: function(source) {
+        console.log('[binder] updated: ' + source);
+        var chained = [];
+        for(var k in this.links) {
+            if(this.links[k].indexOf(source) != -1){
+                tableData[k].readOutput();
+                chained.push(parseInt(k));
+            }
+        }
+        chained.forEach(function(x){
+            binder.updated(x);
+        });
+    }
+}
+
+function cellProxy(x){
+    if(x[0] != '!')
+        return x;
+    var tokens = x.substr(1).split(' ');
+    var stack = [];
+    var listenFor = [];
+    for(var i = 0; i < tokens.length; i++) {
+        switch(tokens[i]) {
+        case '+':
+            stack.push(stack.pop() + stack.pop());
+            break;
+        case '-':
+            stack.push(- stack.pop() + stack.pop());
+            break;
+        case '*':
+            stack.push(stack.pop() * stack.pop());
+            break;
+        case '/':
+            stack.push(1/stack.pop() * stack.pop());
+            break;
+        case '%':
+            var b = stack.pop();
+            var a = stack.pop();
+            stack.push(a % b);
+            break;
+        default:
+            if(tokens[i][0] == '$'){
+                var cellName = tokens[i].substr(1);
+                listenFor.push(parseInt(cellName));
+                stack.push(parseFloat(tableData[cellName].readOutput()));
+            } else {
+                stack.push(parseFloat(tokens[i]))
+            }
+        }
+    }
+    this.trigger('register', listenFor);
+    return stack.pop();
+}
+
+var tableData = [];
+var tableElem = document.getElementById('tab1');
+var tableWidth = 10;
+var tableHeight = 20;
+
+var cells = [];
+for(var i = 0; i < tableWidth * tableHeight; i++) {
+    var f = new MutableField('', cellProxy);
+    f.on('update', function(i){
+        binder.updated(i);
+    }.bind(null, i));
+    f.on('register', function(i, data){
+        binder.registerUpstreams(i, data)
+    }.bind(null, i));
+    tableData[i] = f;
+    var td = document.createElement('td');
+    td.appendChild(f.elem);
+    cells.push(td);
+    if(i % tableWidth + 1 == tableWidth) {
+        var tr = document.createElement('tr');
+        for(var j = 0; j < cells.length; j++) {
+            tr.appendChild(cells[j]);
+        }
+        tableElem.appendChild(tr);
+        cells = [];
+    }
+}
+var currentCell = 0;
+/*
+setInterval(function(){
+    tableData[currentCell].hilite('transparent');
+    var randomValue = Math.floor(Math.random() * 1000);
+    var randomAddr = Math.floor(Math.random() * tableWidth * tableHeight);
+    tableData[randomAddr].val(randomValue);
+    tableData[randomAddr].hilite('#CFD');
+    currentCell = randomAddr;
+}, 100);
+*/
+</script>
