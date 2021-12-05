@@ -3,6 +3,12 @@
 	"footer": "&copy; keyreach@github>>https://github.com/keyreach/ Built using myOwnSecretTechnique.",
 	"posts": [
 		{
+			"title":	"gfxmultitool",
+			"url":		"gfxtool/index.html",
+			"info":		"Apply graphic filters/effects to images in browser",
+			"tags":		["javascript", "graphics"]
+		},
+		{
 			"title":	"Runjs",
 			"url":		"runjs.htm",
 			"info":		"Run Javascript snippets",

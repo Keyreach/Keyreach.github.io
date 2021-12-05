@@ -1,0 +1,193 @@
+<!doctype html>
+<meta charset='utf-8' />
+<title>gfxmultitool</title>
+<style>
+body {
+    font: 400 12pt 'Roboto Mono', monospace;
+    background-color: #FFF;
+	background-image: url('bg.png');
+    color: #fff;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+h1 {
+    font-weight: 400;
+    font-size: 20pt;
+}
+.settings {
+    padding: 5px;
+    background: #111;
+	color: #fff;
+}
+legend {
+	text-transform: uppercase;
+}
+canvas {
+    max-width: 100%;
+}
+a {
+	color: #5a0;
+}
+label {
+	margin-bottom: 10px;
+}
+input, select {
+	border: 0px solid #FFF;
+	background: #000;
+	color: #FFF;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 12pt;
+}
+button {
+	border: 0px solid #5a0;
+	background: #AAA;
+	color: #000;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 12pt;
+	padding: 4px 10px;
+	cursor: pointer;
+}
+button:hover {
+	background: #5a0;
+	color: #FFF;
+}
+</style>
+<div class='settings'>
+	<div style='margin-bottom: 10px'>
+		<b>Filters:</b>
+		<a href='?monochromator.js'>Monochromator</a>
+		<a href='?lesscolors.js'>Color Reductor</a>
+		<a href='?transparentize.js'>Transparentize</a>
+		<a href='?scanlinedesync.js'>Scanline De-sync</a>
+		<a href='?basicblend.js'>Color Fill Blend</a>
+	</div>
+    <fieldset>
+        <legend>[ Select image file ]</legend>
+        <input type='file' id='upfile'>
+        <button onclick='reload()'>Reload</button>
+        <button onclick='runWorker()'>Process</button>
+    </fieldset>
+    <fieldset id='filterSettings'>
+    </fieldset>
+</div>
+<canvas id='cnv' width='640' height='480'></canvas>
+<script>
+var cnv = document.getElementById('cnv');
+var ctx = cnv.getContext('2d');
+var upfile = document.getElementById('upfile');
+var filterScript = 'monochromator.js';
+if(location.search != ''){
+	filterScript = location.search.substr(1);
+}
+var worker = new Worker(filterScript);
+var filterInputs = {};
+worker.onmessage = function(event){
+    switch(event.data.event){
+        case 'init':
+            console.log('Initializing filter: ' + event.data.name);
+	    var pluginLabel = document.createElement('legend');
+	    pluginLabel.textContent = '[ ' + event.data.name + ' ]';
+	    document.all.filterSettings.appendChild(pluginLabel)
+            filterInputs = {};
+            for(var param in event.data.params){
+                switch(event.data.params[param].type){
+                    case 'string':
+                        var elem = document.createElement('input');
+						var label = document.createElement('label');
+                        elem.value = event.data.params[param].default;
+						elem.id = 'param_' + param;
+						label.setAttribute('for', elem.id);
+						label.style.display = 'block';
+						label.innerText = param + ' = ';
+						label.appendChild(elem);
+                        document.all.filterSettings.appendChild(label);
+                        filterInputs[param] = function(elem){ return elem.value; }.bind(null, elem);
+                        break;
+					case 'flag':
+						var elem = document.createElement('input');
+						var label = document.createElement('label');
+                        elem.value = event.data.params[param].default;
+						elem.id = 'param_' + param;
+						elem.type = 'checkbox';
+						label.setAttribute('for', elem.id);
+						label.style.display = 'block';
+						label.innerText = param + ' = ';
+						label.appendChild(elem);
+                        document.all.filterSettings.appendChild(label);
+                        filterInputs[param] = function(elem){ return elem.checked; }.bind(null, elem);
+                        break;
+					case 'enum':
+						var elem = document.createElement('select');
+						var label = document.createElement('label');
+						for(var option in event.data.params[param].options){
+							elem.add(new Option(event.data.params[param].options[option], option));
+						}
+						elem.id = 'param_' + param;
+						label.setAttribute('for', elem.id);
+						label.style.display = 'block';
+						label.innerText = param + ' = ';
+						label.appendChild(elem);
+						document.all.filterSettings.appendChild(label);
+						filterInputs[param] = function(elem){ return elem.options[elem.selectedIndex].value; }.bind(null, elem)
+						break;
+					case 'range':
+						var elem = document.createElement('input');
+						var label = document.createElement('label');
+						elem.type = 'range';
+						elem.min = event.data.params[param].min;
+						elem.max = event.data.params[param].max;
+						elem.value = event.data.params[param].min;
+						elem.id = 'param_' + param;
+						label.setAttribute('for', elem.id);
+						label.style.display = 'block';
+						label.innerText = param + ' = ';
+						label.appendChild(elem);
+                        document.all.filterSettings.appendChild(label);
+                        filterInputs[param] = function(elem){ return elem.value; }.bind(null, elem);
+                        break;
+                }
+            }
+            break;
+        case 'done':
+            ctx.putImageData(event.data.result, 0, 0);
+            break;
+    }
+};
+function runWorker(){
+    var request = {
+        image: ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height),
+        width: ctx.canvas.width,
+        height: ctx.canvas.height
+    };
+    for(var param in filterInputs){
+        request[param] = filterInputs[param]();
+    }
+    worker.postMessage(request);
+}
+upfile.addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(file.type.match('image.*')){
+        //this.file = file;
+        //this.filename = file.name;
+        loadFile(file);
+    }
+});
+function reload(){
+    loadFile(document.all.upfile.files[0]);
+}
+function loadFile(file){
+    var reader = new FileReader();
+    reader.onload = function(e){
+        var img = new Image();
+        img.src = e.target.result;
+        img.onload = function(){
+            var ratio = img.width / img.height;
+            cnv.width = img.width;
+            cnv.height = img.height;
+            ctx.drawImage(img, 0, 0, cnv.width, cnv.height);
+        }
+    }
+    reader.readAsDataURL(file);
+}
+</script>
